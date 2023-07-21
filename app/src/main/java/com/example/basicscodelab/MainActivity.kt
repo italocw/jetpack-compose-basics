@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,9 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Greeting(name: String) {
+        val expanded = remember { mutableStateOf(false) }
+        val extraPadding = if (expanded.value) 48.dp else 0.dp
+
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,12 +56,14 @@ class MainActivity : ComponentActivity() {
             color = MaterialTheme.colorScheme.primary
         ) {
            Row(modifier = Modifier.padding(24.dp)) {
-               Column(modifier = Modifier.weight(1f)) {
+               Column(modifier = Modifier.weight(1f).padding(bottom = extraPadding)) {
                    Text("Hello, ")
                    Text("$name!")
                }
-               Button(onClick = { /*TODO*/ }) {
-                   Text("Show more")
+               ElevatedButton(
+                   onClick = { expanded.value = !expanded.value }
+               ) {
+                   Text(if (expanded.value ) "Show less" else "Show more")
                }
 
            }
