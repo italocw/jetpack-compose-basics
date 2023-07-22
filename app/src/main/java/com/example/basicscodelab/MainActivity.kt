@@ -3,6 +3,9 @@ package com.example.basicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -108,28 +111,37 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Greeting(name: String) {
+    private fun Greeting(name: String) {
+
         var expanded by remember { mutableStateOf(false) }
-        val extraPadding = if (expanded) 48.dp else 0.dp
+
+        val extraPadding by animateDpAsState(
+            if (expanded) 48.dp else 0.dp,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
 
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp, horizontal = 8.dp),
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
         ) {
-           Row(modifier = Modifier.padding(24.dp)) {
-               Column(modifier = Modifier.weight(1f).padding(bottom = extraPadding)) {
-                   Text("Hello, ")
-                   Text("$name!")
-               }
-               ElevatedButton(
-                   onClick = { expanded = !expanded }
-               ) {
-                   Text(if (expanded ) "Show less" else "Show more")
-               }
+            Row(modifier = Modifier.padding(24.dp)) {
+                Column(modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+                ) {
+                    Text(text = "Hello, ")
+                    Text(text = name)
+                }
+                ElevatedButton(
+                    onClick = { expanded = !expanded }
+                ) {
+                    Text(if (expanded) "Show less" else "Show more")
+                }
 
-           }
+            }
         }
     }
 
