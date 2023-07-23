@@ -1,5 +1,6 @@
 package com.example.basicscodelab
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun OnboardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Unit) {
@@ -133,8 +135,12 @@ class MainActivity : ComponentActivity() {
                     .padding(bottom = extraPadding.coerceAtLeast(0.dp))
                 ) {
                     Text(text = "Hello, ")
-                    Text(text = name)
-                }
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    )                }
                 ElevatedButton(
                     onClick = { expanded = !expanded }
                 ) {
@@ -145,6 +151,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Preview(
+        showBackground = true,
+        widthDp = 320,
+        uiMode = UI_MODE_NIGHT_YES,
+        name = "Dark"
+    )
     @Preview(showBackground = true)
     @Composable
     private fun DefaultPreview() {
